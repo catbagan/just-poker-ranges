@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Consolas;
+}
+
+.banner {
+  text-align: center;
+  background-color: lightsalmon;
+  padding: 10px 0 10px 0;
+}
+
+.disable-select {
+  /* supported by Chrome and Opera */
+  user-select: none;
+  /* Safari */
+  -webkit-user-select: none;
+  /* Konqueror HTML */
+  -khtml-user-select: none;
+  /* Firefox */
+  -moz-user-select: none;
+  /* Internet Explorer/Edge */
+  -ms-user-select: none;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr
+}
+
+.data {
+  background-color: #EEEEEE;
+  justify-self: left;
+  margin-left: 100px;
+  padding: 10px;
+  background-color: #EEEEEE;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.hands {
+  justify-self: right;
+  background-color: #EEEEEE;
+  padding: 2px;
+}
+
+.hands, .hand {
+  border: 1px solid black;
+  border-spacing: 5px;
+  border-radius: 5px;
+  font-size: 24px;
+}
+
+.row {
+  margin: 2px;
+}
+
+.hand {
+  text-align: center;
+  margin: 2px;
+}
+
+.offsuit {
+  background-color: #DDDDFF
+}
+
+.offsuit-selected {
+  background-color: #8888FF
+}
+
+.suited {
+  background-color: #FFFFDD
+}
+
+.suited-selected {
+  background-color: #FFFF88
+}
+
+.pair {
+  background-color: #DDFFDD
+}
+
+.pair-selected {
+  background-color: #88FF88
+}
+
+.slider {
+  width: 80%;
+  height: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.slider:before {
+  top: 9px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  content: "";
+  position: absolute;
+  background-color: black;
+}
+
+.dragger {
+  display: block;
+  height: inherit;
+  position: relative;
+  z-index: 2;
+  background-color: red;
+  cursor: inherit;
+}

@@ -1,0 +1,37 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poker Ranges</title>
+    <script src="./main.js"></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <h1 class="banner">Just Poker Ranges</h1>
+    <div class="wrapper">
+      <div></div>
+
+      <table id="hands" class="hands disable-select"></table>
+
+      <div class="data">
+        <div class="stats">
+          <h3>Statistics</h3>
+          <p>Selected Combos: <span id="num-selected"></span></p>
+          <p>Total Combos: <span id="num-total"></span></p>
+          <p>Percentage: <span id="num-percentage"></span></p>
+          <div id="slider" class="slider">
+            <span id="dragger" class="dragger"></span>
+          </div>
+        </div>
+
+        <div class="saved">
+          <h3>Saved ranges</h3>
+          <input id="range-name" placeholder="range name" value="" />
+          <button onclick="saveRange()">Save</button>
+          <div id="saved-ranges"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
