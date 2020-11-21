@@ -445,6 +445,11 @@ const init = () => {
     );
   });
 
+  savedRanges = JSON.parse(loadRangesFromStorage())
+  Object.keys(savedRanges).forEach(name => {
+    addRangeToList(name)
+  })
+
   updateStyling();
   updateDisplayData();
 
@@ -548,35 +553,65 @@ const saveRange = () => {
 
   // Save the range
   savedRanges[rangeName] = [...rangeOfHands];
+  saveRangesToStorage()
 
-  // Update the saved range list
   if (shouldAddToList) {
-    savedRangesElement = document.getElementById("saved-ranges");
-    button = document.createElement("button");
-    button.id = `load-${rangeName}`;
-    button.addEventListener("click", loadRange);
-    button.innerHTML = rangeName;
-    savedRangesElement.appendChild(button);
+    addRangeToList(rangeName)
   }
 
+  // Reset range name input
   rangeNameElement.value = rangeNameElement.defaultValue;
 };
 
-const loadRange = (event) => {
-  console.log(event);
+const addRangeToList = (name) => {
+  savedRangesElement = document.getElementById("saved-ranges");
 
+  nameSpan = document.createElement("span");
+  nameSpan.id = `load-${name}`;
+  nameSpan.addEventListener("click", loadRange);
+  nameSpan.innerHTML = name;
+  nameSpan.style.cursor = 'pointer'
+  nameSpan.style.textDecoration = 'underline'
+
+  // editButton = document.createElement("button");
+  // editButton.id = `edit-${name}`;
+  // editButton.innerHTML = "Edit Name";
+  // editButton.addEventListener("click", (e) => {
+  //   newName = window.prompt('Edit range name', e.target.id.substr(7))
+  // });
+
+  deleteButton = document.createElement("button");
+  deleteButton.id = `delete-${name}`;
+  deleteButton.innerHTML = "Delete";
+  deleteButton.addEventListener("click", (e) => {
+    delete savedRanges[e.target.id.substr(7)] // lol
+    savedRangesElement.removeChild(e.target.parentElement)
+
+    saveRangesToStorage()
+  });
+
+  div = document.createElement('div')
+  div.appendChild(nameSpan)
+  // div.appendChild(editButton)
+  div.appendChild(deleteButton)
+  savedRangesElement.appendChild(div);
+}
+
+const loadRange = (event) => {
   rangeOfHands = [...savedRanges[event.target.id.substr(5)]];
 
   updateStyling();
   updateDisplayData();
 };
 
-const resetRange = () => {
-  rangeOfHands = [];
 
-  updateStyling();
-  updateDisplayData();
-};
+const loadRangesFromStorage = () => {
+  return localStorage.getItem('justPokerRanges-savedRanges')
+}
+
+const saveRangesToStorage = () => {
+  localStorage.setItem('justPokerRanges-savedRanges', JSON.stringify(savedRanges));
+}
 
 const updateDragger = (e) => {
   // Limit dragger position to width of slider
