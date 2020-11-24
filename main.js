@@ -373,18 +373,6 @@ const HAND_RANKINGS = [
 
 const DRAGGER_WIDTH = 5;
 
-////////
-// Utils
-////////
-const isPairHand = (hand) => hand.charAt(0) === hand.charAt(1);
-const isSuitedHand = (hand) => hand.charAt(hand.length - 1) === "s";
-const isOffsuitHand = (hand) => hand.charAt(hand.length - 1) === "o";
-const isHandElement = (maybeHandElement) =>
-  maybeHandElement != null &&
-  maybeHandElement.classList != null &&
-  maybeHandElement.classList.contains("hand");
-const isSelectedHandElement = (hand) => hand.classList.contains("selected");
-
 ////////////
 // App State
 ////////////
@@ -488,6 +476,7 @@ const updateHand = (handElement) => {
 
   updateStyling();
   updateDisplayData();
+  updateDragger();
 };
 
 const updateStyling = () => {
@@ -526,15 +515,7 @@ const updateDisplayData = () => {
 
 const getNumCombos = () =>
   rangeOfHands.reduce((num, hand) => {
-    if (isPairHand(hand)) {
-      return num + 6;
-    } else if (isSuitedHand(hand)) {
-      return num + 4;
-    } else if (isOffsuitHand(hand)) {
-      return num + 12;
-    } else {
-      throw Error("unexpected hand");
-    }
+    return num += getNumCombosOfHand(hand)
   }, 0);
 
 const saveRange = () => {
@@ -542,10 +523,12 @@ const saveRange = () => {
   rangeNameElement = document.getElementById("range-name");
   rangeName = rangeNameElement.value;
   if (rangeName == null || rangeName.length === 0) {
-    throw Error("name required to save range");
+    alert("name required to save range");
+    return;
   }
   if (rangeOfHands.length === 0) {
-    throw Error("range must have at least 1 hand");
+    alert("range must have at least 1 hand");
+    return;
   }
 
   // Only add to list if this is a new range
@@ -616,25 +599,70 @@ const saveRangesToStorage = () => {
 }
 
 const updateDragger = (e) => {
-  // Limit dragger position to width of slider
-  const limitX = Math.min(
-    Math.max(e.pageX, slider.offsetLeft),
-    slider.offsetLeft + slider.offsetWidth
-  );
+  if (e == null) {
+    // Update dragger based on manual hand selection
+    const numSelectedCombos = getNumCombos();
+    const numTotalCombos = 1326;
+    const percent = numSelectedCombos / numTotalCombos;
+  
+    // Update dragger position
+    dragger.style.left = Math.round((slider.offsetWidth) * percent) - DRAGGER_WIDTH;
 
-  // Update dragger position
-  dragger.style.left = limitX - slider.offsetLeft - DRAGGER_WIDTH;
+  } else {
+    // Update dragger when dragged.
+    const limitX = Math.min(
+      Math.max(e.pageX, slider.offsetLeft),
+      slider.offsetLeft + slider.offsetWidth
+    );
 
-  // Update chart using percentage from slider position
-  delta = limitX - slider.offsetLeft;
-  percent = delta / slider.offsetWidth;
-  updateRangeFromSlider(percent);
+    // Update dragger position
+    dragger.style.left = limitX - slider.offsetLeft - DRAGGER_WIDTH;
+
+    // Update chart using percentage from slider position
+    delta = limitX - slider.offsetLeft;
+    percent = delta / slider.offsetWidth;
+    updateRangeFromSlider(percent);
+  }
 };
 
+const RANKED_COMBOS = []
 const updateRangeFromSlider = (percent) => {
-  end = Math.ceil(percent * HAND_RANKINGS.length);
-  rangeOfHands = HAND_RANKINGS.slice(0, end);
+  // We want percentage of combos of hands rather than percentage of hands.
+  if (RANKED_COMBOS.length === 0) {
+    for (const hand of HAND_RANKINGS) {
+      for (let i = 0; i < getNumCombosOfHand(hand); i++) {
+        RANKED_COMBOS.push(hand);
+      }
+    }
+  }
+
+  end = Math.ceil(percent * RANKED_COMBOS.length);
+  rangeOfHands = [... new Set(RANKED_COMBOS.slice(0, end))]
 
   updateStyling();
   updateDisplayData();
 };
+
+////////
+// Utils
+////////
+const isPairHand = (hand) => hand.charAt(0) === hand.charAt(1);
+const isSuitedHand = (hand) => hand.charAt(hand.length - 1) === "s";
+const isOffsuitHand = (hand) => hand.charAt(hand.length - 1) === "o";
+const isHandElement = (maybeHandElement) =>
+  maybeHandElement != null &&
+  maybeHandElement.classList != null &&
+  maybeHandElement.classList.contains("hand");
+const isSelectedHandElement = (hand) => hand.classList.contains("selected");
+
+const getNumCombosOfHand = (hand) => {
+  if (isPairHand(hand)) {
+    return 6;
+  } else if (isSuitedHand(hand)) {
+    return 4;
+  } else if (isOffsuitHand(hand)) {
+    return 12;
+  } else {
+    throw Error("unexpected hand");
+  }
+}
