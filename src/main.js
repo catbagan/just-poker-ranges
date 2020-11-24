@@ -587,6 +587,7 @@ const loadRange = (event) => {
 
   updateStyling();
   updateDisplayData();
+  updateDragger();
 };
 
 
@@ -600,7 +601,7 @@ const saveRangesToStorage = () => {
 
 const updateDragger = (e) => {
   if (e == null) {
-    // Update dragger based on manual hand selection
+    // Update dragger based on manual hand selection or loading of a range
     const numSelectedCombos = getNumCombos();
     const numTotalCombos = 1326;
     const percent = numSelectedCombos / numTotalCombos;
