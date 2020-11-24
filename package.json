@@ -1,0 +1,27 @@
+{
+  "name": "just-poker-ranges",
+  "version": "1.0.0",
+  "description": "Create and save poker ranges.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d build && uglifyjs --compress --mangle -o build/main.js -- build/main.js && cp src/index.html build && cp src/styles.css build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catbagan/just-poker-ranges.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/catbagan/just-poker-ranges/issues"
+  },
+  "homepage": "https://github.com/catbagan/just-poker-ranges#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.8",
+    "@babel/preset-env": "^7.12.7",
+    "uglify-js": "^3.12.0"
+  }
+}
