@@ -435,17 +435,17 @@ const init = () => {
     table.appendChild(newRow);
   });
 
-  document.addEventListener("mousedown", enableUpdating);
+  document.addEventListener("mousedown", (e) => e.button === 0 ? enableUpdating : undefined);
   document.addEventListener("mouseup", disableUpdating);
 
   Array.from(document.getElementsByClassName("hand")).forEach((element) => {
-    element.addEventListener("mousedown", (e) => enableUpdating(e.target));
+    element.addEventListener("mousedown", (e) => e.button === 0 ? enableUpdating(e.target) : undefined);
     element.addEventListener("mouseover", (e) =>
       isUpdatingEnabled ? updateHand(e.target) : undefined
     );
   });
 
-  savedRanges = JSON.parse(loadRangesFromStorage())
+  savedRanges = JSON.parse(loadRangesFromStorage()) ?? {}
   Object.keys(savedRanges).forEach(name => {
     addRangeToList(name)
   })
@@ -582,15 +582,17 @@ const addRangeToList = (name) => {
 
   deleteButton = document.createElement("button");
   deleteButton.id = `delete-${name}`;
-  deleteButton.innerHTML = "Delete";
+  deleteButton.innerHTML = "x";
   deleteButton.addEventListener("click", (e) => {
     delete savedRanges[e.target.id.substr(7)] // lol
     savedRangesElement.removeChild(e.target.parentElement)
 
     saveRangesToStorage()
   });
+  deleteButton.style.margin = "0px 0.5vw 0px";
 
   div = document.createElement('div')
+  div.classList.add('saved-range')
   div.appendChild(nameSpan)
   // div.appendChild(editButton)
   div.appendChild(deleteButton)

@@ -1,13 +1,14 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Consolas;
+  font-family: monospace;
 }
 
 .banner {
   text-align: center;
   background-color: lightsalmon;
   padding: 10px 0 10px 0;
+  font-size: 3vw;
 }
 
 .disable-select {
@@ -24,31 +25,26 @@ body {
 }
 
 .wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr
+  display: flex;
+  justify-content: center;
 }
 
 .data {
   background-color: #EEEEEE;
-  justify-self: left;
-  margin-left: 100px;
-  padding: 10px;
-  background-color: #EEEEEE;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  padding: 10px 10px 10px 10px;
+  font-size: 1vw;
 }
 
 .hands {
-  justify-self: right;
   background-color: #EEEEEE;
-  padding: 2px;
+  padding: 10px 10px 10px 10px;
 }
 
-.hands, .hand {
+.hand {
   border: 1px solid black;
   border-spacing: 5px;
   border-radius: 5px;
-  font-size: 24px;
+  font-size: 2vw;
 }
 
 .row {
@@ -82,6 +78,10 @@ body {
 
 .pair-selected {
   background-color: #88FF88
+}
+
+.saved-range {
+  padding: 1px;
 }
 
 .slider {
