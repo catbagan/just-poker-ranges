@@ -1,2 +1,4 @@
 # Just Poker Ranges
 Create and save poker ranges.
+
+Live at https://awesome-ptolemy-6fe1e5.netlify.app/
